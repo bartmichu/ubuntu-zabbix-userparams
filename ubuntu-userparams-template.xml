@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2021-04-24T19:25:25Z</date>
+    <groups>
+        <group>
+            <name>Templates/Operating systems</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template ubuntu-userparams by Zabbix agent active</template>
+            <name>Template ubuntu-userparams by Zabbix agent active</name>
+            <groups>
+                <group>
+                    <name>Templates/Operating systems</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <name>Needrestart - kernel</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>ubuntu-userparams.needrestart.kernel</key>
+                    <delay>10m</delay>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}=2</expression>
+                            <name>Obsolete kernel -  ABI compatible upgrade pending</name>
+                            <priority>INFO</priority>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                        <trigger>
+                            <expression>{last()}=0</expression>
+                            <name>Obsolete kernel - status unknown or failed to detect</name>
+                            <priority>INFO</priority>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                        <trigger>
+                            <expression>{last()}=3</expression>
+                            <name>Obsolete kernel - version upgrade pending</name>
+                            <priority>INFO</priority>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Needrestart - libraries</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>ubuntu-userparams.needrestart.libs</key>
+                    <delay>10m</delay>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&gt;0</expression>
+                            <name>Some services need to be restarted</name>
+                            <priority>INFO</priority>
+                            <description>Some services are using meanwhile deleted files (e.g. shared libraries) and may need to be restarted.</description>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Needrestart - processes</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>ubuntu-userparams.needrestart.pids</key>
+                    <delay>10m</delay>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&gt;0</expression>
+                            <name>Some processes need to be restarted</name>
+                            <priority>INFO</priority>
+                            <description>Some processes are using meanwhile deleted files and may need to be restarted.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Reboot required</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>ubuntu-userparams.reboot.required</key>
+                    <delay>10m</delay>
+                    <valuemap>
+                        <name>TruthValue</name>
+                    </valuemap>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}=1</expression>
+                            <name>Reboot is required</name>
+                            <priority>WARNING</priority>
+                            <description>System reboot is needed due to previous update or install of a core library or service.</description>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Support - days to EOL</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>ubuntu-userparams.support.eol</key>
+                    <delay>1d</delay>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&lt;=30 and {last()}&gt;=0</expression>
+                            <name>Not long to EOL</name>
+                            <priority>AVERAGE</priority>
+                            <description>Installed distribution reaches End Of Life milestone very soon.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Support - status</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>ubuntu-userparams.support.status</key>
+                    <delay>1d</delay>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&lt;&gt;1</expression>
+                            <name>Unsupported distribution</name>
+                            <priority>HIGH</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Updates - all</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>ubuntu-userparams.updates.all</key>
+                    <delay>10m</delay>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&gt;0</expression>
+                            <name>Package updates are available</name>
+                            <priority>INFO</priority>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Unattended upgrades</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>ubuntu-userparams.updates.automatic</key>
+                    <delay>10m</delay>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}=0</expression>
+                            <name>Unattended upgrades are not enabled</name>
+                            <priority>INFO</priority>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Updates - security</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>ubuntu-userparams.updates.security</key>
+                    <delay>10m</delay>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&gt;0</expression>
+                            <name>Security updates are available</name>
+                            <priority>AVERAGE</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+            </items>
+        </template>
+    </templates>
+    <value_maps>
+        <value_map>
+            <name>TruthValue</name>
+            <mappings>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>true</newvalue>
+                </mapping>
+                <mapping>
+                    <value>2</value>
+                    <newvalue>false</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+    </value_maps>
+</zabbix_export>
