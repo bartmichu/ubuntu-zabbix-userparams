@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>5.0</version>
-    <date>2021-04-24T19:25:25Z</date>
+    <date>2021-04-30T16:25:00Z</date>
     <groups>
         <group>
             <name>Templates/Operating systems</name>
@@ -22,11 +22,14 @@
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.needrestart.kernel</key>
                     <delay>10m</delay>
+                    <history>30d</history>
+                    <trends>60d</trends>
                     <triggers>
                         <trigger>
                             <expression>{last()}=2</expression>
                             <name>Obsolete kernel -  ABI compatible upgrade pending</name>
                             <priority>INFO</priority>
+                            <description>Obsolete kernel was detected by needrestart. ABI compatible upgrade is pending and reboot is required to ensure that your system benefits from these updates.</description>
                             <manual_close>YES</manual_close>
                         </trigger>
                         <trigger>
@@ -39,6 +42,7 @@
                             <expression>{last()}=3</expression>
                             <name>Obsolete kernel - version upgrade pending</name>
                             <priority>INFO</priority>
+                            <description>Obsolete kernel was detected by needrestart. Version upgrade is pending and reboot is required to ensure that your system benefits from these updates.</description>
                             <manual_close>YES</manual_close>
                         </trigger>
                     </triggers>
@@ -48,12 +52,14 @@
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.needrestart.libs</key>
                     <delay>10m</delay>
+                    <history>30d</history>
+                    <trends>60d</trends>
                     <triggers>
                         <trigger>
                             <expression>{last()}&gt;0</expression>
                             <name>Some services need to be restarted</name>
                             <priority>INFO</priority>
-                            <description>Some services are using meanwhile deleted files (e.g. shared libraries) and may need to be restarted.</description>
+                            <description>There are running services which still use files and libraries deleted or updated by recent upgrades. They should be restarted to benefit from the latest updates.</description>
                             <manual_close>YES</manual_close>
                         </trigger>
                     </triggers>
@@ -63,12 +69,14 @@
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.needrestart.pids</key>
                     <delay>10m</delay>
+                    <history>30d</history>
+                    <trends>60d</trends>
                     <triggers>
                         <trigger>
                             <expression>{last()}&gt;0</expression>
                             <name>Some processes need to be restarted</name>
                             <priority>INFO</priority>
-                            <description>Some processes are using meanwhile deleted files and may need to be restarted.</description>
+                            <description>Some processes are using meanwhile deleted files and may need to be restarted to benefit from the latest updates.</description>
                         </trigger>
                     </triggers>
                 </item>
@@ -77,6 +85,8 @@
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.reboot.required</key>
                     <delay>10m</delay>
+                    <history>30d</history>
+                    <trends>60d</trends>
                     <valuemap>
                         <name>TruthValue</name>
                     </valuemap>
@@ -95,12 +105,24 @@
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.support.eol</key>
                     <delay>1d</delay>
+                    <history>30d</history>
+                    <trends>60d</trends>
                     <triggers>
                         <trigger>
+                            <expression>{last()}&lt;=90 and {last()}&gt;=31</expression>
+                            <name>Ubuntu EOL reminder</name>
+                            <priority>INFO</priority>
+                            <description>This is a reminder that installed Ubuntu release will soon reach the End Of Life milestone. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.&#13;
+&#13;
+You should look into upgrade paths.</description>
+                        </trigger>
+                        <trigger>
                             <expression>{last()}&lt;=30 and {last()}&gt;=0</expression>
-                            <name>Not long to EOL</name>
+                            <name>Ubuntu EOL urgent reminder</name>
                             <priority>AVERAGE</priority>
-                            <description>Installed distribution reaches End Of Life milestone very soon.</description>
+                            <description>This is a reminder that installed Ubuntu release will reach the End Of Life milestone very soon. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.&#13;
+&#13;
+You should look into upgrade paths immediately if you haven't already.</description>
                         </trigger>
                     </triggers>
                 </item>
@@ -109,11 +131,14 @@
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.support.status</key>
                     <delay>1d</delay>
+                    <history>30d</history>
+                    <trends>60d</trends>
                     <triggers>
                         <trigger>
                             <expression>{last()}&lt;&gt;1</expression>
-                            <name>Unsupported distribution</name>
+                            <name>Unsupported Ubuntu release</name>
                             <priority>HIGH</priority>
+                            <description>Installed Ubuntu release reached the End Of Life milestone and is not supported by its vendor. It will not receive security patches or other software updates.</description>
                         </trigger>
                     </triggers>
                 </item>
@@ -122,6 +147,8 @@
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.updates.all</key>
                     <delay>10m</delay>
+                    <history>30d</history>
+                    <trends>60d</trends>
                     <triggers>
                         <trigger>
                             <expression>{last()}&gt;0</expression>
@@ -135,7 +162,9 @@
                     <name>Unattended upgrades</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.updates.automatic</key>
-                    <delay>10m</delay>
+                    <delay>1h</delay>
+                    <history>30d</history>
+                    <trends>60d</trends>
                     <triggers>
                         <trigger>
                             <expression>{last()}=0</expression>
@@ -150,6 +179,8 @@
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.updates.security</key>
                     <delay>10m</delay>
+                    <history>30d</history>
+                    <trends>60d</trends>
                     <triggers>
                         <trigger>
                             <expression>{last()}&gt;0</expression>
