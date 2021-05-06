@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>5.0</version>
-    <date>2021-04-30T16:25:00Z</date>
+    <date>2021-05-06T15:32:09Z</date>
     <groups>
         <group>
             <name>Templates/Operating systems</name>
@@ -11,6 +11,7 @@
         <template>
             <template>Template ubuntu-userparams by Zabbix agent active</template>
             <name>Template ubuntu-userparams by Zabbix agent active</name>
+            <description>User parameters file at https://github.com/bartmichu/ubuntu-zabbix-userparams</description>
             <groups>
                 <group>
                     <name>Templates/Operating systems</name>
