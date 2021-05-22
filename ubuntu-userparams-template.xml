@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>5.0</version>
-    <date>2021-05-06T15:32:09Z</date>
+    <date>2021-05-22T16:55:45Z</date>
     <groups>
         <group>
             <name>Templates/Operating systems</name>
@@ -28,22 +28,24 @@
                     <triggers>
                         <trigger>
                             <expression>{last()}=2</expression>
-                            <name>Obsolete kernel -  ABI compatible upgrade pending</name>
+                            <name>Pending kernel upgrade -  ABI compatible upgrade pending</name>
                             <priority>INFO</priority>
-                            <description>Obsolete kernel was detected by needrestart. ABI compatible upgrade is pending and reboot is required to ensure that your system benefits from these updates.</description>
+                            <description>Obsolete kernel was detected by needrestart.&#13;
+ABI compatible upgrade is pending and reboot is required to ensure that your system benefits from these updates. You should consider rebooting.</description>
                             <manual_close>YES</manual_close>
                         </trigger>
                         <trigger>
                             <expression>{last()}=0</expression>
-                            <name>Obsolete kernel - status unknown or failed to detect</name>
-                            <priority>INFO</priority>
+                            <name>Pending kernel upgrade - status unknown or failed to detect</name>
+                            <priority>WARNING</priority>
                             <manual_close>YES</manual_close>
                         </trigger>
                         <trigger>
                             <expression>{last()}=3</expression>
-                            <name>Obsolete kernel - version upgrade pending</name>
+                            <name>Pending kernel upgrade - version upgrade pending</name>
                             <priority>INFO</priority>
-                            <description>Obsolete kernel was detected by needrestart. Version upgrade is pending and reboot is required to ensure that your system benefits from these updates.</description>
+                            <description>Obsolete kernel was detected by needrestart.&#13;
+Version upgrade is pending and reboot is required to ensure that your system benefits from these updates. You should consider rebooting.</description>
                             <manual_close>YES</manual_close>
                         </trigger>
                     </triggers>
@@ -77,7 +79,7 @@
                             <expression>{last()}&gt;0</expression>
                             <name>Some processes need to be restarted</name>
                             <priority>INFO</priority>
-                            <description>Some processes are using meanwhile deleted files and may need to be restarted to benefit from the latest updates.</description>
+                            <description>There are running processes which still use files deleted or updated by recent upgrades. They should be restarted to benefit from the latest updates.</description>
                         </trigger>
                     </triggers>
                 </item>
@@ -94,7 +96,7 @@
                     <triggers>
                         <trigger>
                             <expression>{last()}=1</expression>
-                            <name>Reboot is required</name>
+                            <name>System reboot is required</name>
                             <priority>WARNING</priority>
                             <description>System reboot is needed due to previous update or install of a core library or service.</description>
                             <manual_close>YES</manual_close>
@@ -110,20 +112,18 @@
                     <trends>60d</trends>
                     <triggers>
                         <trigger>
-                            <expression>{last()}&lt;=90 and {last()}&gt;=31</expression>
-                            <name>Ubuntu EOL reminder</name>
-                            <priority>INFO</priority>
-                            <description>This is a reminder that installed Ubuntu release will soon reach the End Of Life milestone. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.&#13;
-&#13;
-You should look into upgrade paths.</description>
-                        </trigger>
-                        <trigger>
                             <expression>{last()}&lt;=30 and {last()}&gt;=0</expression>
-                            <name>Ubuntu EOL urgent reminder</name>
+                            <name>Ubuntu release nears its End Of Life</name>
                             <priority>AVERAGE</priority>
                             <description>This is a reminder that installed Ubuntu release will reach the End Of Life milestone very soon. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.&#13;
-&#13;
 You should look into upgrade paths immediately if you haven't already.</description>
+                        </trigger>
+                        <trigger>
+                            <expression>{last()}&lt;=90 and {last()}&gt;=31</expression>
+                            <name>Ubuntu release nears its End Of Life</name>
+                            <priority>WARNING</priority>
+                            <description>This is a reminder that installed Ubuntu release will soon reach the End Of Life milestone. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.&#13;
+You should look into upgrade paths.</description>
                         </trigger>
                     </triggers>
                 </item>
