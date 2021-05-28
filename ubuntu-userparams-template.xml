@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>5.0</version>
-    <date>2021-05-22T16:55:45Z</date>
+    <date>2021-05-28T18:34:35Z</date>
     <groups>
         <group>
             <name>Templates/Operating systems</name>
@@ -60,7 +60,7 @@ Version upgrade is pending and reboot is required to ensure that your system ben
                     <triggers>
                         <trigger>
                             <expression>{last()}&gt;0</expression>
-                            <name>Some services need to be restarted</name>
+                            <name>Number of services that need to be restarted: {ITEM.VALUE}</name>
                             <priority>INFO</priority>
                             <description>There are running services which still use files and libraries deleted or updated by recent upgrades. They should be restarted to benefit from the latest updates.</description>
                             <manual_close>YES</manual_close>
@@ -77,7 +77,7 @@ Version upgrade is pending and reboot is required to ensure that your system ben
                     <triggers>
                         <trigger>
                             <expression>{last()}&gt;0</expression>
-                            <name>Some processes need to be restarted</name>
+                            <name>Number of processes that need to be restarted: {ITEM.VALUE}</name>
                             <priority>INFO</priority>
                             <description>There are running processes which still use files deleted or updated by recent upgrades. They should be restarted to benefit from the latest updates.</description>
                         </trigger>
@@ -113,14 +113,14 @@ Version upgrade is pending and reboot is required to ensure that your system ben
                     <triggers>
                         <trigger>
                             <expression>{last()}&lt;=30 and {last()}&gt;=0</expression>
-                            <name>Ubuntu release nears its End Of Life</name>
+                            <name>Ubuntu release nears its End Of Life ({ITEM.VALUE} days)</name>
                             <priority>AVERAGE</priority>
                             <description>This is a reminder that installed Ubuntu release will reach the End Of Life milestone very soon. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.&#13;
 You should look into upgrade paths immediately if you haven't already.</description>
                         </trigger>
                         <trigger>
                             <expression>{last()}&lt;=90 and {last()}&gt;=31</expression>
-                            <name>Ubuntu release nears its End Of Life</name>
+                            <name>Ubuntu release nears its End Of Life ({ITEM.VALUE} days)</name>
                             <priority>WARNING</priority>
                             <description>This is a reminder that installed Ubuntu release will soon reach the End Of Life milestone. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.&#13;
 You should look into upgrade paths.</description>
@@ -153,23 +153,7 @@ You should look into upgrade paths.</description>
                     <triggers>
                         <trigger>
                             <expression>{last()}&gt;0</expression>
-                            <name>Package updates are available</name>
-                            <priority>INFO</priority>
-                            <manual_close>YES</manual_close>
-                        </trigger>
-                    </triggers>
-                </item>
-                <item>
-                    <name>Unattended upgrades</name>
-                    <type>ZABBIX_ACTIVE</type>
-                    <key>ubuntu-userparams.updates.automatic</key>
-                    <delay>1h</delay>
-                    <history>30d</history>
-                    <trends>60d</trends>
-                    <triggers>
-                        <trigger>
-                            <expression>{last()}=0</expression>
-                            <name>Unattended upgrades are not enabled</name>
+                            <name>Package updates are available ({ITEM.VALUE})</name>
                             <priority>INFO</priority>
                             <manual_close>YES</manual_close>
                         </trigger>
@@ -185,8 +169,8 @@ You should look into upgrade paths.</description>
                     <triggers>
                         <trigger>
                             <expression>{last()}&gt;0</expression>
-                            <name>Security updates are available</name>
-                            <priority>AVERAGE</priority>
+                            <name>Security updates are available ({ITEM.VALUE})</name>
+                            <priority>WARNING</priority>
                         </trigger>
                     </triggers>
                 </item>
