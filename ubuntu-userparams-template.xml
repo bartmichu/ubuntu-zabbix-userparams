@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
-    <version>5.0</version>
-    <date>2021-05-28T18:34:35Z</date>
+    <version>5.4</version>
+    <date>2021-10-12T18:14:59Z</date>
     <groups>
         <group>
+            <uuid>846977d1dfed4968bc5f8bdb363285bc</uuid>
             <name>Templates/Operating systems</name>
         </group>
     </groups>
     <templates>
         <template>
+            <uuid>a8e66918705847d087d9f4fb3d457ecc</uuid>
             <template>Template ubuntu-userparams by Zabbix agent active</template>
             <name>Template ubuntu-userparams by Zabbix agent active</name>
-            <description>User parameters file at https://github.com/bartmichu/ubuntu-zabbix-userparams</description>
+            <description>Ubuntu system monitoring.
+
+Corresponding user parameters file and installation instructions can be found at https://github.com/bartmichu/ubuntu-zabbix-userparams</description>
             <groups>
                 <group>
                     <name>Templates/Operating systems</name>
@@ -19,6 +23,7 @@
             </groups>
             <items>
                 <item>
+                    <uuid>dffb38b754ba4a02afeaecc331408876</uuid>
                     <name>Needrestart - kernel</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.needrestart.kernel</key>
@@ -27,30 +32,34 @@
                     <trends>60d</trends>
                     <triggers>
                         <trigger>
-                            <expression>{last()}=2</expression>
+                            <uuid>8f91229eb06248a38c6b52be7f319f56</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.needrestart.kernel)=2</expression>
                             <name>Pending kernel upgrade -  ABI compatible upgrade pending</name>
                             <priority>INFO</priority>
-                            <description>Obsolete kernel was detected by needrestart.&#13;
+                            <description>Obsolete kernel was detected by needrestart.
 ABI compatible upgrade is pending and reboot is required to ensure that your system benefits from these updates. You should consider rebooting.</description>
                             <manual_close>YES</manual_close>
                         </trigger>
                         <trigger>
-                            <expression>{last()}=0</expression>
+                            <uuid>7e561a58b6c740b9a49e3909260fb578</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.needrestart.kernel)=0</expression>
                             <name>Pending kernel upgrade - status unknown or failed to detect</name>
                             <priority>WARNING</priority>
                             <manual_close>YES</manual_close>
                         </trigger>
                         <trigger>
-                            <expression>{last()}=3</expression>
+                            <uuid>759ef7c7f1084bd6ae1a26e6acd850ef</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.needrestart.kernel)=3</expression>
                             <name>Pending kernel upgrade - version upgrade pending</name>
                             <priority>INFO</priority>
-                            <description>Obsolete kernel was detected by needrestart.&#13;
+                            <description>Obsolete kernel was detected by needrestart.
 Version upgrade is pending and reboot is required to ensure that your system benefits from these updates. You should consider rebooting.</description>
                             <manual_close>YES</manual_close>
                         </trigger>
                     </triggers>
                 </item>
                 <item>
+                    <uuid>0d53b4dcdf444b3b9c348232ff7301da</uuid>
                     <name>Needrestart - libraries</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.needrestart.libs</key>
@@ -59,8 +68,9 @@ Version upgrade is pending and reboot is required to ensure that your system ben
                     <trends>60d</trends>
                     <triggers>
                         <trigger>
-                            <expression>{last()}&gt;0</expression>
-                            <name>Number of services that need to be restarted: {ITEM.VALUE}</name>
+                            <uuid>2232c4ee1b0442b780635d44651447e1</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.needrestart.libs)&gt;0</expression>
+                            <name>Some services need to be restarted: {ITEM.VALUE} service[s]</name>
                             <priority>INFO</priority>
                             <description>There are running services which still use files and libraries deleted or updated by recent upgrades. They should be restarted to benefit from the latest updates.</description>
                             <manual_close>YES</manual_close>
@@ -68,6 +78,7 @@ Version upgrade is pending and reboot is required to ensure that your system ben
                     </triggers>
                 </item>
                 <item>
+                    <uuid>6d412ca7117448bb8eb19156a39ba29b</uuid>
                     <name>Needrestart - processes</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.needrestart.pids</key>
@@ -76,14 +87,17 @@ Version upgrade is pending and reboot is required to ensure that your system ben
                     <trends>60d</trends>
                     <triggers>
                         <trigger>
-                            <expression>{last()}&gt;0</expression>
-                            <name>Number of processes that need to be restarted: {ITEM.VALUE}</name>
+                            <uuid>f23a558435ac4fafbaf14aad5358a5eb</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.needrestart.pids)&gt;0</expression>
+                            <name>Some processes need to be restarted: {ITEM.VALUE} process[es]</name>
                             <priority>INFO</priority>
                             <description>There are running processes which still use files deleted or updated by recent upgrades. They should be restarted to benefit from the latest updates.</description>
+                            <manual_close>YES</manual_close>
                         </trigger>
                     </triggers>
                 </item>
                 <item>
+                    <uuid>4385fd4da3664fab98696fd89a773641</uuid>
                     <name>Reboot required</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.reboot.required</key>
@@ -95,7 +109,8 @@ Version upgrade is pending and reboot is required to ensure that your system ben
                     </valuemap>
                     <triggers>
                         <trigger>
-                            <expression>{last()}=1</expression>
+                            <uuid>f521b550f80d4e53aa619abf3cbd69af</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.reboot.required)=1</expression>
                             <name>System reboot is required</name>
                             <priority>WARNING</priority>
                             <description>System reboot is needed due to previous update or install of a core library or service.</description>
@@ -104,6 +119,7 @@ Version upgrade is pending and reboot is required to ensure that your system ben
                     </triggers>
                 </item>
                 <item>
+                    <uuid>8170ef910900471b844f3ca1a4ce9fdc</uuid>
                     <name>Support - days to EOL</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.support.eol</key>
@@ -112,22 +128,25 @@ Version upgrade is pending and reboot is required to ensure that your system ben
                     <trends>60d</trends>
                     <triggers>
                         <trigger>
-                            <expression>{last()}&lt;=30 and {last()}&gt;=0</expression>
+                            <uuid>16fd38de68444542ab62335fab549743</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&lt;=30 and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&gt;=0</expression>
                             <name>Ubuntu release nears its End Of Life ({ITEM.VALUE} days)</name>
                             <priority>AVERAGE</priority>
-                            <description>This is a reminder that installed Ubuntu release will reach the End Of Life milestone very soon. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.&#13;
+                            <description>This is a reminder that installed Ubuntu release will reach the End Of Life milestone very soon. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.
 You should look into upgrade paths immediately if you haven't already.</description>
                         </trigger>
                         <trigger>
-                            <expression>{last()}&lt;=90 and {last()}&gt;=31</expression>
-                            <name>Ubuntu release nears its End Of Life ({ITEM.VALUE} days)</name>
+                            <uuid>239a5bb46db448da93d5c2969c14c64c</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&lt;=90 and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&gt;=31</expression>
+                            <name>Ubuntu release nears its End Of Life: {ITEM.VALUE} days</name>
                             <priority>WARNING</priority>
-                            <description>This is a reminder that installed Ubuntu release will soon reach the End Of Life milestone. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.&#13;
+                            <description>This is a reminder that installed Ubuntu release will soon reach the End Of Life milestone. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.
 You should look into upgrade paths.</description>
                         </trigger>
                     </triggers>
                 </item>
                 <item>
+                    <uuid>f222d5edeb4141cfbdfc1ec104d78575</uuid>
                     <name>Support - status</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.support.status</key>
@@ -136,7 +155,8 @@ You should look into upgrade paths.</description>
                     <trends>60d</trends>
                     <triggers>
                         <trigger>
-                            <expression>{last()}&lt;&gt;1</expression>
+                            <uuid>a40cd1209b45487b9afd808cc044ea3b</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.status)&lt;&gt;1</expression>
                             <name>Unsupported Ubuntu release</name>
                             <priority>HIGH</priority>
                             <description>Installed Ubuntu release reached the End Of Life milestone and is not supported by its vendor. It will not receive security patches or other software updates.</description>
@@ -144,6 +164,7 @@ You should look into upgrade paths.</description>
                     </triggers>
                 </item>
                 <item>
+                    <uuid>43f1048fcbc343acba37a4c73241b10e</uuid>
                     <name>Updates - all</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.updates.all</key>
@@ -152,14 +173,16 @@ You should look into upgrade paths.</description>
                     <trends>60d</trends>
                     <triggers>
                         <trigger>
-                            <expression>{last()}&gt;0</expression>
-                            <name>Package updates are available ({ITEM.VALUE})</name>
+                            <uuid>169bbce4653e45e183668c6dfcbe9265</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.updates.all)&gt;0</expression>
+                            <name>Package updates are available: {ITEM.VALUE} update[s]</name>
                             <priority>INFO</priority>
                             <manual_close>YES</manual_close>
                         </trigger>
                     </triggers>
                 </item>
                 <item>
+                    <uuid>292eaaf1f28c46f58073c2ae672f59d0</uuid>
                     <name>Updates - security</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.updates.security</key>
@@ -168,28 +191,30 @@ You should look into upgrade paths.</description>
                     <trends>60d</trends>
                     <triggers>
                         <trigger>
-                            <expression>{last()}&gt;0</expression>
-                            <name>Security updates are available ({ITEM.VALUE})</name>
+                            <uuid>5f2cc993ceae414e91bddb80f27517cf</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.updates.security)&gt;0</expression>
+                            <name>Security updates pending: {ITEM.VALUE} update[s]</name>
                             <priority>WARNING</priority>
                         </trigger>
                     </triggers>
                 </item>
             </items>
+            <valuemaps>
+                <valuemap>
+                    <uuid>e73d9d2139084aeaa50f27d1f6d97e8e</uuid>
+                    <name>TruthValue</name>
+                    <mappings>
+                        <mapping>
+                            <value>1</value>
+                            <newvalue>true</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>2</value>
+                            <newvalue>false</newvalue>
+                        </mapping>
+                    </mappings>
+                </valuemap>
+            </valuemaps>
         </template>
     </templates>
-    <value_maps>
-        <value_map>
-            <name>TruthValue</name>
-            <mappings>
-                <mapping>
-                    <value>1</value>
-                    <newvalue>true</newvalue>
-                </mapping>
-                <mapping>
-                    <value>2</value>
-                    <newvalue>false</newvalue>
-                </mapping>
-            </mappings>
-        </value_map>
-    </value_maps>
 </zabbix_export>

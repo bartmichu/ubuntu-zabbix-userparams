@@ -1,0 +1,183 @@
+zabbix_export:
+  version: '5.4'
+  date: '2021-10-12T18:14:41Z'
+  groups:
+    -
+      uuid: 846977d1dfed4968bc5f8bdb363285bc
+      name: 'Templates/Operating systems'
+  templates:
+    -
+      uuid: a8e66918705847d087d9f4fb3d457ecc
+      template: 'Template ubuntu-userparams by Zabbix agent active'
+      name: 'Template ubuntu-userparams by Zabbix agent active'
+      description: |
+        Ubuntu system monitoring.
+        
+        Corresponding user parameters file and installation instructions can be found at https://github.com/bartmichu/ubuntu-zabbix-userparams
+      groups:
+        -
+          name: 'Templates/Operating systems'
+      items:
+        -
+          uuid: dffb38b754ba4a02afeaecc331408876
+          name: 'Needrestart - kernel'
+          type: ZABBIX_ACTIVE
+          key: ubuntu-userparams.needrestart.kernel
+          delay: 10m
+          history: 30d
+          trends: 60d
+          triggers:
+            -
+              uuid: 8f91229eb06248a38c6b52be7f319f56
+              expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.needrestart.kernel)=2'
+              name: 'Pending kernel upgrade -  ABI compatible upgrade pending'
+              priority: INFO
+              description: |
+                Obsolete kernel was detected by needrestart.
+                ABI compatible upgrade is pending and reboot is required to ensure that your system benefits from these updates. You should consider rebooting.
+              manual_close: 'YES'
+            -
+              uuid: 7e561a58b6c740b9a49e3909260fb578
+              expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.needrestart.kernel)=0'
+              name: 'Pending kernel upgrade - status unknown or failed to detect'
+              priority: WARNING
+              manual_close: 'YES'
+            -
+              uuid: 759ef7c7f1084bd6ae1a26e6acd850ef
+              expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.needrestart.kernel)=3'
+              name: 'Pending kernel upgrade - version upgrade pending'
+              priority: INFO
+              description: |
+                Obsolete kernel was detected by needrestart.
+                Version upgrade is pending and reboot is required to ensure that your system benefits from these updates. You should consider rebooting.
+              manual_close: 'YES'
+        -
+          uuid: 0d53b4dcdf444b3b9c348232ff7301da
+          name: 'Needrestart - libraries'
+          type: ZABBIX_ACTIVE
+          key: ubuntu-userparams.needrestart.libs
+          delay: 10m
+          history: 30d
+          trends: 60d
+          triggers:
+            -
+              uuid: 2232c4ee1b0442b780635d44651447e1
+              expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.needrestart.libs)>0'
+              name: 'Some services need to be restarted: {ITEM.VALUE} service[s]'
+              priority: INFO
+              description: 'There are running services which still use files and libraries deleted or updated by recent upgrades. They should be restarted to benefit from the latest updates.'
+              manual_close: 'YES'
+        -
+          uuid: 6d412ca7117448bb8eb19156a39ba29b
+          name: 'Needrestart - processes'
+          type: ZABBIX_ACTIVE
+          key: ubuntu-userparams.needrestart.pids
+          delay: 10m
+          history: 30d
+          trends: 60d
+          triggers:
+            -
+              uuid: f23a558435ac4fafbaf14aad5358a5eb
+              expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.needrestart.pids)>0'
+              name: 'Some processes need to be restarted: {ITEM.VALUE} process[es]'
+              priority: INFO
+              description: 'There are running processes which still use files deleted or updated by recent upgrades. They should be restarted to benefit from the latest updates.'
+              manual_close: 'YES'
+        -
+          uuid: 4385fd4da3664fab98696fd89a773641
+          name: 'Reboot required'
+          type: ZABBIX_ACTIVE
+          key: ubuntu-userparams.reboot.required
+          delay: 10m
+          history: 30d
+          trends: 60d
+          valuemap:
+            name: TruthValue
+          triggers:
+            -
+              uuid: f521b550f80d4e53aa619abf3cbd69af
+              expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.reboot.required)=1'
+              name: 'System reboot is required'
+              priority: WARNING
+              description: 'System reboot is needed due to previous update or install of a core library or service.'
+              manual_close: 'YES'
+        -
+          uuid: 8170ef910900471b844f3ca1a4ce9fdc
+          name: 'Support - days to EOL'
+          type: ZABBIX_ACTIVE
+          key: ubuntu-userparams.support.eol
+          delay: 1d
+          history: 30d
+          trends: 60d
+          triggers:
+            -
+              uuid: 16fd38de68444542ab62335fab549743
+              expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)<=30 and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)>=0'
+              name: 'Ubuntu release nears its End Of Life ({ITEM.VALUE} days)'
+              priority: AVERAGE
+              description: |
+                This is a reminder that installed Ubuntu release will reach the End Of Life milestone very soon. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.
+                You should look into upgrade paths immediately if you haven't already.
+            -
+              uuid: 239a5bb46db448da93d5c2969c14c64c
+              expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)<=90 and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)>=31'
+              name: 'Ubuntu release nears its End Of Life: {ITEM.VALUE} days'
+              priority: WARNING
+              description: |
+                This is a reminder that installed Ubuntu release will soon reach the End Of Life milestone. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.
+                You should look into upgrade paths.
+        -
+          uuid: f222d5edeb4141cfbdfc1ec104d78575
+          name: 'Support - status'
+          type: ZABBIX_ACTIVE
+          key: ubuntu-userparams.support.status
+          delay: 1d
+          history: 30d
+          trends: 60d
+          triggers:
+            -
+              uuid: a40cd1209b45487b9afd808cc044ea3b
+              expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.status)<>1'
+              name: 'Unsupported Ubuntu release'
+              priority: HIGH
+              description: 'Installed Ubuntu release reached the End Of Life milestone and is not supported by its vendor. It will not receive security patches or other software updates.'
+        -
+          uuid: 43f1048fcbc343acba37a4c73241b10e
+          name: 'Updates - all'
+          type: ZABBIX_ACTIVE
+          key: ubuntu-userparams.updates.all
+          delay: 10m
+          history: 30d
+          trends: 60d
+          triggers:
+            -
+              uuid: 169bbce4653e45e183668c6dfcbe9265
+              expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.updates.all)>0'
+              name: 'Package updates are available: {ITEM.VALUE} update[s]'
+              priority: INFO
+              manual_close: 'YES'
+        -
+          uuid: 292eaaf1f28c46f58073c2ae672f59d0
+          name: 'Updates - security'
+          type: ZABBIX_ACTIVE
+          key: ubuntu-userparams.updates.security
+          delay: 10m
+          history: 30d
+          trends: 60d
+          triggers:
+            -
+              uuid: 5f2cc993ceae414e91bddb80f27517cf
+              expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.updates.security)>0'
+              name: 'Security updates pending: {ITEM.VALUE} update[s]'
+              priority: WARNING
+      valuemaps:
+        -
+          uuid: e73d9d2139084aeaa50f27d1f6d97e8e
+          name: TruthValue
+          mappings:
+            -
+              value: '1'
+              newvalue: 'true'
+            -
+              value: '2'
+              newvalue: 'false'
