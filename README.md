@@ -1,4 +1,4 @@
-# ubuntu-zabbix-userparams
+# ubuntu-zabbix-userparams: Ubuntu system monitoring
 
 ## Usage
 
