@@ -1,6 +1,6 @@
 zabbix_export:
   version: '5.4'
-  date: '2021-10-12T18:14:41Z'
+  date: '2021-11-22T19:30:30Z'
   groups:
     -
       uuid: 846977d1dfed4968bc5f8bdb363285bc
@@ -170,6 +170,14 @@ zabbix_export:
               expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.updates.security)>0'
               name: 'Security updates pending: {ITEM.VALUE} update[s]'
               priority: WARNING
+        -
+          uuid: 33ca9162c06447e6b1f17094684f9cbe
+          name: 'Ubuntu Template - userparams file version'
+          type: ZABBIX_ACTIVE
+          key: ubuntu-userparams.userparams-version
+          delay: 30m
+          history: 30d
+          trends: 60d
       valuemaps:
         -
           uuid: e73d9d2139084aeaa50f27d1f6d97e8e

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>5.4</version>
-    <date>2021-10-12T18:14:59Z</date>
+    <date>2021-11-22T19:30:32Z</date>
     <groups>
         <group>
             <uuid>846977d1dfed4968bc5f8bdb363285bc</uuid>
@@ -197,6 +197,15 @@ You should look into upgrade paths.</description>
                             <priority>WARNING</priority>
                         </trigger>
                     </triggers>
+                </item>
+                <item>
+                    <uuid>33ca9162c06447e6b1f17094684f9cbe</uuid>
+                    <name>Ubuntu Template - userparams file version</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>ubuntu-userparams.userparams-version</key>
+                    <delay>30m</delay>
+                    <history>30d</history>
+                    <trends>60d</trends>
                 </item>
             </items>
             <valuemaps>
