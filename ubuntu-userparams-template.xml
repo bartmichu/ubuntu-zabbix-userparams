@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>5.4</version>
-    <date>2021-11-22T19:30:32Z</date>
+    <date>2021-12-30T17:53:59Z</date>
     <groups>
         <group>
             <uuid>846977d1dfed4968bc5f8bdb363285bc</uuid>
@@ -30,6 +30,13 @@ Corresponding user parameters file and installation instructions can be found at
                     <delay>10m</delay>
                     <history>30d</history>
                     <trends>60d</trends>
+                    <description>Check for obsolete kernel. Requires sudo.
+
+Expected return value:
+0 - unknown or failed to detect,
+1 - no pending upgrade,
+2 - ABI compatible upgrade pending,
+3 - version upgrade pending.</description>
                     <triggers>
                         <trigger>
                             <uuid>8f91229eb06248a38c6b52be7f319f56</uuid>
@@ -66,6 +73,10 @@ Version upgrade is pending and reboot is required to ensure that your system ben
                     <delay>10m</delay>
                     <history>30d</history>
                     <trends>60d</trends>
+                    <description>Get the number of services which are using meanwhile deleted files (e.g. shared libraries). These services may need to be restarted after an update. Requires sudo.
+
+Expected return value:
+number indicating the number of services.</description>
                     <triggers>
                         <trigger>
                             <uuid>2232c4ee1b0442b780635d44651447e1</uuid>
@@ -85,6 +96,10 @@ Version upgrade is pending and reboot is required to ensure that your system ben
                     <delay>10m</delay>
                     <history>30d</history>
                     <trends>60d</trends>
+                    <description>Get the number of processes which are using meanwhile deleted files. These processes may need to be restarted after an update. Requires sudo.
+
+Expected return value:
+number indicating the number of processes.</description>
                     <triggers>
                         <trigger>
                             <uuid>f23a558435ac4fafbaf14aad5358a5eb</uuid>
@@ -97,6 +112,50 @@ Version upgrade is pending and reboot is required to ensure that your system ben
                     </triggers>
                 </item>
                 <item>
+                    <uuid>d3f0362abf934d77a9ec9db0bce74993</uuid>
+                    <name>Packages - broken</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>ubuntu-userparams.packages.broken</key>
+                    <delay>10m</delay>
+                    <history>30d</history>
+                    <trends>60d</trends>
+                    <description>Get the number of installed packages that are marked differently than 'ok'. These packages are broken and require manual intervention (i.e. re-installation).
+
+Expected return value:
+number indicating the number of packages.</description>
+                    <triggers>
+                        <trigger>
+                            <uuid>20d239fd4acd4095bff61618283cdae4</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.packages.broken)&gt;0</expression>
+                            <name>Broken packages: {ITEM.VALUE} package[s]</name>
+                            <priority>AVERAGE</priority>
+                            <description>Some of installed packages are marked differently than 'ok'. These packages are broken and require manual intervention (i.e. re-installation).</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>98a1d0792811439ab5cb1e20e20e0cfb</uuid>
+                    <name>Packages - problematic</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>ubuntu-userparams.packages.problematic</key>
+                    <delay>10m</delay>
+                    <history>30d</history>
+                    <trends>60d</trends>
+                    <description>Get the number of installed packages that are in potentially problematic state (i.e. different than 'installed' and 'config-files'). These packages may require further configuration or installation steps.
+
+Expected return value:
+number indicating the number of packages.</description>
+                    <triggers>
+                        <trigger>
+                            <uuid>3de8eee9d41f49e9b886678edd215bf4</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.packages.problematic)&gt;0</expression>
+                            <name>Problematic packages: {ITEM.VALUE} package[s]</name>
+                            <priority>WARNING</priority>
+                            <description>Some of installed packages are in potentially problematic state (i.e. different than 'installed' and 'config-files'). These packages may require further configuration or installation steps.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
                     <uuid>4385fd4da3664fab98696fd89a773641</uuid>
                     <name>Reboot required</name>
                     <type>ZABBIX_ACTIVE</type>
@@ -104,6 +163,11 @@ Version upgrade is pending and reboot is required to ensure that your system ben
                     <delay>10m</delay>
                     <history>30d</history>
                     <trends>60d</trends>
+                    <description>Check if the reboot-required file was created by a previous update or install of a core library or service. This flag indicates that a system reboot is needed.
+
+Expected return value:
+1 - reboot is required,
+2 - reboot is not required.</description>
                     <valuemap>
                         <name>TruthValue</name>
                     </valuemap>
@@ -126,6 +190,10 @@ Version upgrade is pending and reboot is required to ensure that your system ben
                     <delay>1d</delay>
                     <history>30d</history>
                     <trends>60d</trends>
+                    <description>Get the number of days until installed release reaches End Of Life milestone.
+
+Expected return value:
+number indicating the number of days.</description>
                     <triggers>
                         <trigger>
                             <uuid>16fd38de68444542ab62335fab549743</uuid>
@@ -153,6 +221,11 @@ You should look into upgrade paths.</description>
                     <delay>1d</delay>
                     <history>30d</history>
                     <trends>60d</trends>
+                    <description>Check support status for currently installed release.
+
+Expected return value:
+0 - unsupported,
+1 - supported.</description>
                     <triggers>
                         <trigger>
                             <uuid>a40cd1209b45487b9afd808cc044ea3b</uuid>
@@ -171,6 +244,10 @@ You should look into upgrade paths.</description>
                     <delay>10m</delay>
                     <history>30d</history>
                     <trends>60d</trends>
+                    <description>Get the number of all applicable updates, including security updates.
+
+Expected return value:
+number indicating the number of updates.</description>
                     <triggers>
                         <trigger>
                             <uuid>169bbce4653e45e183668c6dfcbe9265</uuid>
@@ -189,6 +266,10 @@ You should look into upgrade paths.</description>
                     <delay>10m</delay>
                     <history>30d</history>
                     <trends>60d</trends>
+                    <description>Check the number of pending security updates.
+
+Expected return value:
+number indicating the number of security updates.</description>
                     <triggers>
                         <trigger>
                             <uuid>5f2cc993ceae414e91bddb80f27517cf</uuid>
@@ -206,6 +287,7 @@ You should look into upgrade paths.</description>
                     <delay>30m</delay>
                     <history>30d</history>
                     <trends>60d</trends>
+                    <description>Return version number of this file. Used internally within the template.</description>
                 </item>
             </items>
             <valuemaps>

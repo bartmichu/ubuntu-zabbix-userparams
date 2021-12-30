@@ -27,11 +27,15 @@
 
 ## Keys
 
+- ubuntu-userparams.userparams-version
+
+  Return version number of this file. Used internally within the template.
+
 - ubuntu-userparams.reboot.required
 
   Check if the reboot-required file was created by a previous update or install of a core library or service. This flag indicates that a system reboot is needed.
 
-  Expected return value: ```1``` - reboot is required, ```2``` - reboot is not required
+  Expected return value: ```1``` - reboot is required, ```2``` - reboot is not required.
 
 - ubuntu-userparams.updates.all
 
@@ -49,13 +53,13 @@
 
   Check for obsolete kernel. Requires sudo.
 
-  Expected return value: ```0``` - unknown or failed to detect, ```1``` - no pending upgrade, ```2``` - ABI compatible upgrade pending, ```3``` - version upgrade pending
+  Expected return value: ```0``` - unknown or failed to detect, ```1``` - no pending upgrade, ```2``` - ABI compatible upgrade pending, ```3``` - version upgrade pending.
 
 - ubuntu-userparams.needrestart.libs
 
   Get the number of services which are using meanwhile deleted files (e.g. shared libraries). These services may need to be restarted after an update. Requires sudo.
 
-  Expected return value: number indicating the number of services
+  Expected return value: number indicating the number of services.
 
 - ubuntu-userparams.needrestart.pids
 
@@ -67,13 +71,25 @@
 
   Get the number of days until installed release reaches End Of Life milestone.
 
-  Expected return value: number indicating the number of days
+  Expected return value: number indicating the number of days.
 
 - ubuntu-userparams.support.status
 
   Check support status for currently installed release.
 
-  Expected return value: ```0``` - unsupported, ```1``` - supported
+  Expected return value: ```0``` - unsupported, ```1``` - supported.
+
+- ubuntu-userparams.packages.broken
+
+  Get the number of installed packages that are marked differently than 'ok'. These packages are broken and require manual intervention (i.e. re-installation).
+
+  Expected return value: number indicating the number of packages.
+
+- ubuntu-userparams.packages.problematic
+
+  Get the number of installed packages that are in potentially problematic state (i.e. different than 'installed' and 'config-files'). These packages may require further configuration or installation steps.
+
+  Expected return value: number indicating the number of packages.
 
 ## Template triggers
 
@@ -114,3 +130,11 @@
 - Unsupported Ubuntu release
 
   Installed Ubuntu release reached the End Of Life milestone and is not supported by its vendor. It will not receive security patches or other software updates.
+
+- Broken packages: {ITEM.VALUE} package[s]
+
+  Some of installed packages are marked differently than 'ok'. These packages are broken and require manual intervention (i.e. re-installation).
+
+- Problematic packages: {ITEM.VALUE} package[s]
+
+  Some of installed packages are in potentially problematic state (i.e. different than 'installed' and 'config-files'). These packages may require further configuration or installation steps.
