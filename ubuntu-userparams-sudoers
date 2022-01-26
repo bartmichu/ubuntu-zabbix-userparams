@@ -1,4 +1,5 @@
 Defaults:zabbix !requiretty
+
 Defaults!NEEDRESTART_KERNEL !logfile, !syslog, !pam_session
 Defaults!NEEDRESTART_LIBS !logfile, !syslog, !pam_session
 
