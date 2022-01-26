@@ -27,65 +27,65 @@
 
 ## Keys
 
-- ubuntu-userparams.userparams-version
+- ```ubuntu-userparams.userparams-version```
 
   Return version number of this file. Used internally within the template.
 
-- ubuntu-userparams.reboot.required
+- ```ubuntu-userparams.reboot.required```
 
   Check if the reboot-required file was created by a previous update or install of a core library or service. This flag indicates that a system reboot is needed.
 
   Expected return value: ```1``` - reboot is required, ```2``` - reboot is not required.
 
-- ubuntu-userparams.updates.all
+- ```ubuntu-userparams.updates.all```
 
   Get the number of all applicable updates, including security updates.
 
   Expected return value: number indicating the number of updates.
 
-- ubuntu-userparams.updates.security
+- ```ubuntu-userparams.updates.security```
 
   Check the number of pending security updates.
 
   Expected return value: number indicating the number of security updates.
 
-- ubuntu-userparams.needrestart.kernel
+- ```ubuntu-userparams.needrestart.kernel```
 
   Check for obsolete kernel. Requires sudo.
 
   Expected return value: ```0``` - unknown or failed to detect, ```1``` - no pending upgrade, ```2``` - ABI compatible upgrade pending, ```3``` - version upgrade pending.
 
-- ubuntu-userparams.needrestart.libs
+- ```ubuntu-userparams.needrestart.libs```
 
   Get the number of services which are using meanwhile deleted files (e.g. shared libraries). These services may need to be restarted after an update. Requires sudo.
 
   Expected return value: number indicating the number of services.
 
-- ubuntu-userparams.needrestart.pids
+- ```ubuntu-userparams.needrestart.pids```
 
   Get the number of processes which are using meanwhile deleted files. These processes may need to be restarted after an update. Requires sudo.
 
   Expected return value: number indicating the number of processes.
 
-- ubuntu-userparams.support.eol
+- ```ubuntu-userparams.support.eol```
 
   Get the number of days until installed release reaches End Of Life milestone.
 
   Expected return value: number indicating the number of days.
 
-- ubuntu-userparams.support.status
+- ```ubuntu-userparams.support.status```
 
   Check support status for currently installed release.
 
   Expected return value: ```0``` - unsupported, ```1``` - supported.
 
-- ubuntu-userparams.packages.broken
+- ```ubuntu-userparams.packages.broken```
 
   Get the number of installed packages that are marked differently than 'ok'. These packages are broken and require manual intervention (i.e. re-installation).
 
   Expected return value: number indicating the number of packages.
 
-- ubuntu-userparams.packages.problematic
+- ```ubuntu-userparams.packages.problematic```
 
   Get the number of installed packages that are in potentially problematic state (i.e. different than 'installed' and 'config-files'). These packages may require further configuration or installation steps.
 
