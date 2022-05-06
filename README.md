@@ -2,34 +2,33 @@
 
 ## Usage
 
-- Copy userparams file (```ubuntu-userparams.conf```) to a directory included in your Zabbix Agent configuration file, e.g. ```/etc/zabbix/zabbix_agentd.d/```
+- Copy userparams file (```ubuntu-userparams.conf```) to a directory included in your Zabbix Agent configuration file, e.g. ```/etc/zabbix/zabbix_agentd.d/``` or ```/etc/zabbix/zabbix_agent2.d/```
 - Set userparams file owner and group (```chown root:zabbix ubuntu-userparams.conf```)
 - Set userparams file mode (```chmod 0440 ubuntu-userparams.conf```)
 - Copy corresponding sudoers file (```ubuntu-userparams-sudoers```) to ```/etc/sudoers.d/``` directory
 - Set sudoers file mode (```chmod 0440 /etc/sudoers.d/ubuntu-userparams-sudoers```)
-- Restart Zabbix Agent (```systemctl restart zabbix-agent.service```)
+- Restart Zabbix Agent (```systemctl restart zabbix-agent.service``` or ```systemctl restart zabbix-agent2.service```)
 - Import corresponding template file (```ubuntu-userparams-template.yaml```) on Zabbix Server
 - Link ```Template ubuntu-userparams by Zabbix agent active``` template to selected hosts
 - You may need to increase the Timeout value in your Zabbix Agent configuration file, e.g. ```Timeout=30```
 
 ## System requirements
 
-- ```update-notifier-common``` package installed for ```reboot.*``` keys
-- ```update-notifier-common``` package installed for ```updates.*``` keys
+- ```update-notifier-common``` package installed for ```reboot.*``` and ```updates.*``` keys
 - ```needrestart``` and ```libpam-systemd``` packages installed for ```needrestart.*``` keys
 - ```distro-info``` package installed for ```support.*``` keys
-- ```sudo``` package installed and configured for some of ```needrestart``` keys
+- ```sudo``` installed for some of ```needrestart``` keys
 
 ## Tested on
 
-- Zabbix Agent 5.x on Ubuntu 20.04
+- Zabbix Agent/Zabbix Agent 2 on Ubuntu 20.04 and Ubuntu 22.04
 - Zabbix Server 5.x
 
 ## Keys
 
 - ```ubuntu-userparams.userparams-version```
 
-  Return version number of this file. Used internally within the template.
+  Return version number of this file. Reserved for future use (versioning) within the template.
 
 - ```ubuntu-userparams.reboot.required```
 
@@ -81,7 +80,7 @@
 
 - ```ubuntu-userparams.packages.broken```
 
-  Get the number of installed packages that are marked differently than 'ok'. These packages are broken and require manual intervention (i.e. re-installation).
+  Get the number of installed packages that are not marked as 'ok' in the dpkg database. These packages are broken and require manual intervention (i.e. re-installation).
 
   Expected return value: number indicating the number of packages.
 
@@ -133,7 +132,7 @@
 
 - Broken packages: {ITEM.VALUE} package[s]
 
-  Some of installed packages are marked differently than 'ok'. These packages are broken and require manual intervention (i.e. re-installation).
+  Some of installed packages are not marked as 'ok' in the dpkg database. These packages are broken and require manual intervention (i.e. re-installation).
 
 - Problematic packages: {ITEM.VALUE} package[s]
 
