@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>5.4</version>
-    <date>2021-12-30T17:53:59Z</date>
+    <date>2022-05-06T18:18:53Z</date>
     <groups>
         <group>
             <uuid>846977d1dfed4968bc5f8bdb363285bc</uuid>
@@ -33,10 +33,10 @@ Corresponding user parameters file and installation instructions can be found at
                     <description>Check for obsolete kernel. Requires sudo.
 
 Expected return value:
-0 - unknown or failed to detect,
-1 - no pending upgrade,
-2 - ABI compatible upgrade pending,
-3 - version upgrade pending.</description>
+0 - unknown or failed to detect
+1 - no pending upgrade
+2 - ABI compatible upgrade pending
+3 - version upgrade pending</description>
                     <triggers>
                         <trigger>
                             <uuid>8f91229eb06248a38c6b52be7f319f56</uuid>
@@ -81,7 +81,8 @@ number indicating the number of services.</description>
                         <trigger>
                             <uuid>2232c4ee1b0442b780635d44651447e1</uuid>
                             <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.needrestart.libs)&gt;0</expression>
-                            <name>Some services need to be restarted: {ITEM.VALUE} service[s]</name>
+                            <name>Some services need to be restarted</name>
+                            <opdata>{ITEM.VALUE} service[s]</opdata>
                             <priority>INFO</priority>
                             <description>There are running services which still use files and libraries deleted or updated by recent upgrades. They should be restarted to benefit from the latest updates.</description>
                             <manual_close>YES</manual_close>
@@ -104,7 +105,8 @@ number indicating the number of processes.</description>
                         <trigger>
                             <uuid>f23a558435ac4fafbaf14aad5358a5eb</uuid>
                             <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.needrestart.pids)&gt;0</expression>
-                            <name>Some processes need to be restarted: {ITEM.VALUE} process[es]</name>
+                            <name>Some processes need to be restarted</name>
+                            <opdata>{ITEM.VALUE} process[es]</opdata>
                             <priority>INFO</priority>
                             <description>There are running processes which still use files deleted or updated by recent upgrades. They should be restarted to benefit from the latest updates.</description>
                             <manual_close>YES</manual_close>
@@ -119,7 +121,7 @@ number indicating the number of processes.</description>
                     <delay>10m</delay>
                     <history>30d</history>
                     <trends>60d</trends>
-                    <description>Get the number of installed packages that are marked differently than 'ok'. These packages are broken and require manual intervention (i.e. re-installation).
+                    <description>Get the number of installed packages that are not marked as 'ok' in the dpkg database. These packages are broken and require manual intervention (i.e. re-installation).
 
 Expected return value:
 number indicating the number of packages.</description>
@@ -127,9 +129,10 @@ number indicating the number of packages.</description>
                         <trigger>
                             <uuid>20d239fd4acd4095bff61618283cdae4</uuid>
                             <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.packages.broken)&gt;0</expression>
-                            <name>Broken packages: {ITEM.VALUE} package[s]</name>
+                            <name>Broken packages</name>
+                            <opdata>{ITEM.VALUE} package[s]</opdata>
                             <priority>AVERAGE</priority>
-                            <description>Some of installed packages are marked differently than 'ok'. These packages are broken and require manual intervention (i.e. re-installation).</description>
+                            <description>Some of installed packages are not marked as 'ok' in the dpkg database. These packages are broken and require manual intervention (i.e. re-installation).</description>
                         </trigger>
                     </triggers>
                 </item>
@@ -149,7 +152,8 @@ number indicating the number of packages.</description>
                         <trigger>
                             <uuid>3de8eee9d41f49e9b886678edd215bf4</uuid>
                             <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.packages.problematic)&gt;0</expression>
-                            <name>Problematic packages: {ITEM.VALUE} package[s]</name>
+                            <name>Problematic packages</name>
+                            <opdata>{ITEM.VALUE} package[s]</opdata>
                             <priority>WARNING</priority>
                             <description>Some of installed packages are in potentially problematic state (i.e. different than 'installed' and 'config-files'). These packages may require further configuration or installation steps.</description>
                         </trigger>
@@ -166,8 +170,8 @@ number indicating the number of packages.</description>
                     <description>Check if the reboot-required file was created by a previous update or install of a core library or service. This flag indicates that a system reboot is needed.
 
 Expected return value:
-1 - reboot is required,
-2 - reboot is not required.</description>
+1 - reboot is required
+2 - reboot is not required</description>
                     <valuemap>
                         <name>TruthValue</name>
                     </valuemap>
@@ -184,7 +188,7 @@ Expected return value:
                 </item>
                 <item>
                     <uuid>8170ef910900471b844f3ca1a4ce9fdc</uuid>
-                    <name>Support - days to EOL</name>
+                    <name>Support - EOL</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>ubuntu-userparams.support.eol</key>
                     <delay>1d</delay>
@@ -198,7 +202,8 @@ number indicating the number of days.</description>
                         <trigger>
                             <uuid>16fd38de68444542ab62335fab549743</uuid>
                             <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&lt;=30 and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&gt;=0</expression>
-                            <name>Ubuntu release nears its End Of Life ({ITEM.VALUE} days)</name>
+                            <name>Ubuntu release nears its End Of Life</name>
+                            <opdata>{ITEM.VALUE} days</opdata>
                             <priority>AVERAGE</priority>
                             <description>This is a reminder that installed Ubuntu release will reach the End Of Life milestone very soon. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.
 You should look into upgrade paths immediately if you haven't already.</description>
@@ -206,7 +211,8 @@ You should look into upgrade paths immediately if you haven't already.</descript
                         <trigger>
                             <uuid>239a5bb46db448da93d5c2969c14c64c</uuid>
                             <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&lt;=90 and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&gt;=31</expression>
-                            <name>Ubuntu release nears its End Of Life: {ITEM.VALUE} days</name>
+                            <name>Ubuntu release nears its End Of Life</name>
+                            <opdata>{ITEM.VALUE} days</opdata>
                             <priority>WARNING</priority>
                             <description>This is a reminder that installed Ubuntu release will soon reach the End Of Life milestone. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.
 You should look into upgrade paths.</description>
@@ -224,8 +230,8 @@ You should look into upgrade paths.</description>
                     <description>Check support status for currently installed release.
 
 Expected return value:
-0 - unsupported,
-1 - supported.</description>
+0 - unsupported
+1 - supported</description>
                     <triggers>
                         <trigger>
                             <uuid>a40cd1209b45487b9afd808cc044ea3b</uuid>
@@ -252,7 +258,8 @@ number indicating the number of updates.</description>
                         <trigger>
                             <uuid>169bbce4653e45e183668c6dfcbe9265</uuid>
                             <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.updates.all)&gt;0</expression>
-                            <name>Package updates are available: {ITEM.VALUE} update[s]</name>
+                            <name>Package updates are available</name>
+                            <opdata>{ITEM.VALUE} update[s]</opdata>
                             <priority>INFO</priority>
                             <manual_close>YES</manual_close>
                         </trigger>
@@ -274,7 +281,8 @@ number indicating the number of security updates.</description>
                         <trigger>
                             <uuid>5f2cc993ceae414e91bddb80f27517cf</uuid>
                             <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.updates.security)&gt;0</expression>
-                            <name>Security updates pending: {ITEM.VALUE} update[s]</name>
+                            <name>Security updates pending</name>
+                            <opdata>{ITEM.VALUE} update[s]</opdata>
                             <priority>WARNING</priority>
                         </trigger>
                     </triggers>
@@ -287,7 +295,7 @@ number indicating the number of security updates.</description>
                     <delay>30m</delay>
                     <history>30d</history>
                     <trends>60d</trends>
-                    <description>Return version number of this file. Used internally within the template.</description>
+                    <description>Return version number of this file. Reserved for future use (versioning) within the template.</description>
                 </item>
             </items>
             <valuemaps>

@@ -1,6 +1,6 @@
 zabbix_export:
   version: '5.4'
-  date: '2021-12-30T17:53:56Z'
+  date: '2022-05-06T18:18:51Z'
   groups:
     -
       uuid: 846977d1dfed4968bc5f8bdb363285bc
@@ -30,10 +30,10 @@ zabbix_export:
             Check for obsolete kernel. Requires sudo.
             
             Expected return value:
-            0 - unknown or failed to detect,
-            1 - no pending upgrade,
-            2 - ABI compatible upgrade pending,
-            3 - version upgrade pending.
+            0 - unknown or failed to detect
+            1 - no pending upgrade
+            2 - ABI compatible upgrade pending
+            3 - version upgrade pending
           triggers:
             -
               uuid: 8f91229eb06248a38c6b52be7f319f56
@@ -76,7 +76,8 @@ zabbix_export:
             -
               uuid: 2232c4ee1b0442b780635d44651447e1
               expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.needrestart.libs)>0'
-              name: 'Some services need to be restarted: {ITEM.VALUE} service[s]'
+              name: 'Some services need to be restarted'
+              opdata: '{ITEM.VALUE} service[s]'
               priority: INFO
               description: 'There are running services which still use files and libraries deleted or updated by recent upgrades. They should be restarted to benefit from the latest updates.'
               manual_close: 'YES'
@@ -97,7 +98,8 @@ zabbix_export:
             -
               uuid: f23a558435ac4fafbaf14aad5358a5eb
               expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.needrestart.pids)>0'
-              name: 'Some processes need to be restarted: {ITEM.VALUE} process[es]'
+              name: 'Some processes need to be restarted'
+              opdata: '{ITEM.VALUE} process[es]'
               priority: INFO
               description: 'There are running processes which still use files deleted or updated by recent upgrades. They should be restarted to benefit from the latest updates.'
               manual_close: 'YES'
@@ -110,7 +112,7 @@ zabbix_export:
           history: 30d
           trends: 60d
           description: |
-            Get the number of installed packages that are marked differently than 'ok'. These packages are broken and require manual intervention (i.e. re-installation).
+            Get the number of installed packages that are not marked as 'ok' in the dpkg database. These packages are broken and require manual intervention (i.e. re-installation).
             
             Expected return value:
             number indicating the number of packages.
@@ -118,9 +120,10 @@ zabbix_export:
             -
               uuid: 20d239fd4acd4095bff61618283cdae4
               expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.packages.broken)>0'
-              name: 'Broken packages: {ITEM.VALUE} package[s]'
+              name: 'Broken packages'
+              opdata: '{ITEM.VALUE} package[s]'
               priority: AVERAGE
-              description: 'Some of installed packages are marked differently than ''ok''. These packages are broken and require manual intervention (i.e. re-installation).'
+              description: 'Some of installed packages are not marked as ''ok'' in the dpkg database. These packages are broken and require manual intervention (i.e. re-installation).'
         -
           uuid: 98a1d0792811439ab5cb1e20e20e0cfb
           name: 'Packages - problematic'
@@ -138,7 +141,8 @@ zabbix_export:
             -
               uuid: 3de8eee9d41f49e9b886678edd215bf4
               expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.packages.problematic)>0'
-              name: 'Problematic packages: {ITEM.VALUE} package[s]'
+              name: 'Problematic packages'
+              opdata: '{ITEM.VALUE} package[s]'
               priority: WARNING
               description: 'Some of installed packages are in potentially problematic state (i.e. different than ''installed'' and ''config-files''). These packages may require further configuration or installation steps.'
         -
@@ -153,8 +157,8 @@ zabbix_export:
             Check if the reboot-required file was created by a previous update or install of a core library or service. This flag indicates that a system reboot is needed.
             
             Expected return value:
-            1 - reboot is required,
-            2 - reboot is not required.
+            1 - reboot is required
+            2 - reboot is not required
           valuemap:
             name: TruthValue
           triggers:
@@ -167,7 +171,7 @@ zabbix_export:
               manual_close: 'YES'
         -
           uuid: 8170ef910900471b844f3ca1a4ce9fdc
-          name: 'Support - days to EOL'
+          name: 'Support - EOL'
           type: ZABBIX_ACTIVE
           key: ubuntu-userparams.support.eol
           delay: 1d
@@ -182,7 +186,8 @@ zabbix_export:
             -
               uuid: 16fd38de68444542ab62335fab549743
               expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)<=30 and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)>=0'
-              name: 'Ubuntu release nears its End Of Life ({ITEM.VALUE} days)'
+              name: 'Ubuntu release nears its End Of Life'
+              opdata: '{ITEM.VALUE} days'
               priority: AVERAGE
               description: |
                 This is a reminder that installed Ubuntu release will reach the End Of Life milestone very soon. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.
@@ -190,7 +195,8 @@ zabbix_export:
             -
               uuid: 239a5bb46db448da93d5c2969c14c64c
               expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)<=90 and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)>=31'
-              name: 'Ubuntu release nears its End Of Life: {ITEM.VALUE} days'
+              name: 'Ubuntu release nears its End Of Life'
+              opdata: '{ITEM.VALUE} days'
               priority: WARNING
               description: |
                 This is a reminder that installed Ubuntu release will soon reach the End Of Life milestone. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.
@@ -207,8 +213,8 @@ zabbix_export:
             Check support status for currently installed release.
             
             Expected return value:
-            0 - unsupported,
-            1 - supported.
+            0 - unsupported
+            1 - supported
           triggers:
             -
               uuid: a40cd1209b45487b9afd808cc044ea3b
@@ -233,7 +239,8 @@ zabbix_export:
             -
               uuid: 169bbce4653e45e183668c6dfcbe9265
               expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.updates.all)>0'
-              name: 'Package updates are available: {ITEM.VALUE} update[s]'
+              name: 'Package updates are available'
+              opdata: '{ITEM.VALUE} update[s]'
               priority: INFO
               manual_close: 'YES'
         -
@@ -253,7 +260,8 @@ zabbix_export:
             -
               uuid: 5f2cc993ceae414e91bddb80f27517cf
               expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.updates.security)>0'
-              name: 'Security updates pending: {ITEM.VALUE} update[s]'
+              name: 'Security updates pending'
+              opdata: '{ITEM.VALUE} update[s]'
               priority: WARNING
         -
           uuid: 33ca9162c06447e6b1f17094684f9cbe
@@ -263,7 +271,7 @@ zabbix_export:
           delay: 30m
           history: 30d
           trends: 60d
-          description: 'Return version number of this file. Used internally within the template.'
+          description: 'Return version number of this file. Reserved for future use (versioning) within the template.'
       valuemaps:
         -
           uuid: e73d9d2139084aeaa50f27d1f6d97e8e
