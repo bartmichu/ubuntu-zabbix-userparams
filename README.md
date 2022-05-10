@@ -24,7 +24,17 @@
 - Zabbix Agent/Zabbix Agent 2 on Ubuntu 20.04 and Ubuntu 22.04
 - Zabbix Server 5.x
 
-## Keys
+## Template Macros
+
+- ```{$UBUNTUUSERPARAMS.REBOOT.GRACEPERIOD}```
+
+  Grace period for reboot-pending error. Default value: ```24h```
+
+- ```{$UBUNTUUSERPARAMS.SECURITY.GRACEPERIOD}```
+
+  Grace period for security updates error. Default value: ```24h```
+
+## Template Keys
 
 - ```ubuntu-userparams.userparams-version```
 
@@ -92,7 +102,7 @@
 
 ## Template triggers
 
-- Package updates are available: {ITEM.VALUE} update[s]
+- Package updates are available (operational data)
 
 - Pending kernel upgrade - ABI compatible upgrade pending
 
@@ -104,13 +114,17 @@
 
   Obsolete kernel was detected by needrestart. Version upgrade is pending and reboot is required to ensure that your system benefits from these updates. You should consider rebooting.
 
-- Security updates pending: {ITEM.VALUE} update[s]
+- Security updates pending (operational data)
 
-- Some processes need to be restarted: {ITEM.VALUE} process[es]
+- Security updates pending for over {$UBUNTUUSERPARAMS.SECURITY.GRACEPERIOD}
+
+  Default value: 24 hours
+
+- Some processes need to be restarted (operational data)
 
   There are running processes which still use files deleted or updated by recent upgrades. They should be restarted to benefit from the latest updates.
 
-- Some services need to be restarted: {ITEM.VALUE} service[s]
+- Some services need to be restarted (operational data)
 
   There are running services which still use files and libraries deleted or updated by recent upgrades. They should be restarted to benefit from the latest updates.
 
@@ -118,11 +132,15 @@
 
   System reboot is needed due to previous update or install of a core library or service.
 
-- Ubuntu release nears its End Of Life ({ITEM.VALUE} days)
+- System reboot pending for over {$UBUNTUUSERPARAMS.REBOOT.GRACEPERIOD}
+
+  Default value: 24 hours
+
+- Ubuntu release nears its End Of Life (operational data)
 
   This is a reminder that installed Ubuntu release will reach the End Of Life milestone very soon. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor. You should look into upgrade paths immediately if you haven't already.
 
-- Ubuntu release nears its End Of Life: {ITEM.VALUE} days
+- Ubuntu release nears its End Of Life (operational data)
 
   This is a reminder that installed Ubuntu release will soon reach the End Of Life milestone. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor. You should look into upgrade paths.
 
@@ -130,10 +148,10 @@
 
   Installed Ubuntu release reached the End Of Life milestone and is not supported by its vendor. It will not receive security patches or other software updates.
 
-- Broken packages: {ITEM.VALUE} package[s]
+- Broken packages (operational data)
 
   Some of installed packages are not marked as 'ok' in the dpkg database. These packages are broken and require manual intervention (i.e. re-installation).
 
-- Problematic packages: {ITEM.VALUE} package[s]
+- Problematic packages (operational data)
 
   Some of installed packages are in potentially problematic state (i.e. different than 'installed' and 'config-files'). These packages may require further configuration or installation steps.
