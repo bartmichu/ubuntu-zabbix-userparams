@@ -1,6 +1,6 @@
 zabbix_export:
   version: '5.4'
-  date: '2022-05-11T15:30:39Z'
+  date: '2022-05-11T15:53:13Z'
   groups:
     -
       uuid: 846977d1dfed4968bc5f8bdb363285bc
@@ -18,6 +18,25 @@ zabbix_export:
         -
           name: 'Templates/Operating systems'
       items:
+        -
+          uuid: 7be80c9139d249feb97ce113280e17b3
+          name: 'Ungraceful shutdown'
+          type: ZABBIX_ACTIVE
+          key: ubuntu-userparams.graceful-shutdown
+          delay: 10m
+          description: |
+            Check if system was shut down gracefully before current boot.
+            
+            Expected return value:
+            1 - ungraceful shutdown
+            2 - graceful shutdown
+          triggers:
+            -
+              uuid: fc8158f9d8724238aff57b637356404a
+              expression: 'last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.graceful-shutdown)<>2'
+              name: 'Ungraceful shutdown'
+              priority: WARNING
+              description: 'System was not shut down gracefully before current boot.'
         -
           uuid: dffb38b754ba4a02afeaecc331408876
           name: 'Needrestart - kernel'

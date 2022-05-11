@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>5.4</version>
-    <date>2022-05-11T15:30:41Z</date>
+    <date>2022-05-11T15:53:14Z</date>
     <groups>
         <group>
             <uuid>846977d1dfed4968bc5f8bdb363285bc</uuid>
@@ -22,6 +22,27 @@ Corresponding user parameters file and installation instructions can be found at
                 </group>
             </groups>
             <items>
+                <item>
+                    <uuid>7be80c9139d249feb97ce113280e17b3</uuid>
+                    <name>Ungraceful shutdown</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>ubuntu-userparams.graceful-shutdown</key>
+                    <delay>10m</delay>
+                    <description>Check if system was shut down gracefully before current boot.
+
+Expected return value:
+1 - ungraceful shutdown
+2 - graceful shutdown</description>
+                    <triggers>
+                        <trigger>
+                            <uuid>fc8158f9d8724238aff57b637356404a</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.graceful-shutdown)&lt;&gt;2</expression>
+                            <name>Ungraceful shutdown</name>
+                            <priority>WARNING</priority>
+                            <description>System was not shut down gracefully before current boot.</description>
+                        </trigger>
+                    </triggers>
+                </item>
                 <item>
                     <uuid>dffb38b754ba4a02afeaecc331408876</uuid>
                     <name>Needrestart - kernel</name>

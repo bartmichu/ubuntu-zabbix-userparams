@@ -42,7 +42,7 @@
 
   Release EoL error threshold (in days). Default value: 30
 
-## Template Keys
+## Template Items
 
 - ```ubuntu-userparams.userparams-version```
 
@@ -108,6 +108,12 @@
 
   Expected return value: number indicating the number of packages.
 
+- ```ubuntu-userparams.graceful-shutdown```
+
+  Check if system was shut down gracefully before current boot.
+
+  Expected return value: 1 - ungraceful shutdown, 2 - graceful shutdown.
+
 ## Template triggers
 
 - Package updates are available (operational data)
@@ -163,3 +169,7 @@
 - Problematic packages (operational data)
 
   Some of installed packages are in potentially problematic state (i.e. different than 'installed' and 'config-files'). These packages may require further configuration or installation steps.
+
+- Ungraceful shutdown
+
+  System was not shut down gracefully before current boot.
