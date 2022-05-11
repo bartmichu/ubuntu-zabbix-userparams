@@ -1,7 +1,7 @@
 {
     "zabbix_export": {
         "version": "5.4",
-        "date": "2022-05-10T12:55:00Z",
+        "date": "2022-05-11T15:30:43Z",
         "groups": [
             {
                 "uuid": "846977d1dfed4968bc5f8bdb363285bc",
@@ -133,7 +133,8 @@
                                 "name": "Problematic packages",
                                 "opdata": "{ITEM.VALUE} package[s]",
                                 "priority": "WARNING",
-                                "description": "Some of installed packages are in potentially problematic state (i.e. different than 'installed' and 'config-files'). These packages may require further configuration or installation steps."
+                                "description": "Some of installed packages are in potentially problematic state (i.e. different than 'installed' and 'config-files'). These packages may require further configuration or installation steps.",
+                                "manual_close": "YES"
                             }
                         ]
                     },
@@ -162,8 +163,7 @@
                                 "uuid": "f157b7b891174064905d32cb041efffd",
                                 "expression": "count(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.reboot.required,{$UBUNTUUSERPARAMS.REBOOT.GRACEPERIOD},\"eq\",\"1\")>0 and count(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.reboot.required,{$UBUNTUUSERPARAMS.REBOOT.GRACEPERIOD},\"eq\",\"2\")=0",
                                 "name": "System reboot pending for over {$UBUNTUUSERPARAMS.REBOOT.GRACEPERIOD}",
-                                "priority": "AVERAGE",
-                                "manual_close": "YES"
+                                "priority": "AVERAGE"
                             }
                         ]
                     },
@@ -178,20 +178,21 @@
                         "description": "Get the number of days until installed release reaches End Of Life milestone.\n\nExpected return value:\nnumber indicating the number of days.",
                         "triggers": [
                             {
+                                "uuid": "239a5bb46db448da93d5c2969c14c64c",
+                                "expression": "last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)<={$UBUNTUUSERPARAMS.RELEASE.THRESHOLD1} and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)>{$UBUNTUUSERPARAMS.RELEASE.THRESHOLD2}",
+                                "name": "Ubuntu release nears its End Of Life",
+                                "opdata": "{ITEM.VALUE} days",
+                                "priority": "WARNING",
+                                "description": "This is a reminder that installed Ubuntu release will soon reach the End Of Life milestone. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.\nYou should look into upgrade paths.",
+                                "manual_close": "YES"
+                            },
+                            {
                                 "uuid": "16fd38de68444542ab62335fab549743",
-                                "expression": "last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)<=30 and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)>=0",
+                                "expression": "last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)<={$UBUNTUUSERPARAMS.RELEASE.THRESHOLD2} and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)>=0",
                                 "name": "Ubuntu release nears its End Of Life",
                                 "opdata": "{ITEM.VALUE} days",
                                 "priority": "AVERAGE",
                                 "description": "This is a reminder that installed Ubuntu release will reach the End Of Life milestone very soon. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.\nYou should look into upgrade paths immediately if you haven't already."
-                            },
-                            {
-                                "uuid": "239a5bb46db448da93d5c2969c14c64c",
-                                "expression": "last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)<=90 and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)>=31",
-                                "name": "Ubuntu release nears its End Of Life",
-                                "opdata": "{ITEM.VALUE} days",
-                                "priority": "WARNING",
-                                "description": "This is a reminder that installed Ubuntu release will soon reach the End Of Life milestone. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.\nYou should look into upgrade paths."
                             }
                         ]
                     },
@@ -249,12 +250,14 @@
                                 "expression": "last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.updates.security)>0",
                                 "name": "Security updates pending",
                                 "opdata": "{ITEM.VALUE} update[s]",
-                                "priority": "WARNING"
+                                "priority": "WARNING",
+                                "manual_close": "YES"
                             },
                             {
                                 "uuid": "d44eac9744da4e38869f6ce47858be68",
                                 "expression": "count(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.updates.security,{$UBUNTUUSERPARAMS.SECURITY.GRACEPERIOD},\"gt\",\"0\")>0 and count(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.updates.security,{$UBUNTUUSERPARAMS.SECURITY.GRACEPERIOD},\"eq\",\"0\")=0",
                                 "name": "Security updates pending for over {$UBUNTUUSERPARAMS.SECURITY.GRACEPERIOD}",
+                                "opdata": "{ITEM.LASTVALUE}1 update[s]",
                                 "priority": "AVERAGE"
                             }
                         ]
@@ -273,11 +276,23 @@
                 "macros": [
                     {
                         "macro": "{$UBUNTUUSERPARAMS.REBOOT.GRACEPERIOD}",
-                        "value": "24h"
+                        "value": "24h",
+                        "description": "Grace period for reboot-pending error. Default value: 24h"
+                    },
+                    {
+                        "macro": "{$UBUNTUUSERPARAMS.RELEASE.THRESHOLD1}",
+                        "value": "90",
+                        "description": "Release EoL warning threshold (in days). Default value: 90"
+                    },
+                    {
+                        "macro": "{$UBUNTUUSERPARAMS.RELEASE.THRESHOLD2}",
+                        "value": "30",
+                        "description": "Release EoL error threshold (in days). Default value: 30"
                     },
                     {
                         "macro": "{$UBUNTUUSERPARAMS.SECURITY.GRACEPERIOD}",
-                        "value": "24h"
+                        "value": "24h",
+                        "description": "Grace period for security updates error. Default value: 24h"
                     }
                 ],
                 "valuemaps": [

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>5.4</version>
-    <date>2022-05-10T12:54:58Z</date>
+    <date>2022-05-11T15:30:41Z</date>
     <groups>
         <group>
             <uuid>846977d1dfed4968bc5f8bdb363285bc</uuid>
@@ -156,6 +156,7 @@ number indicating the number of packages.</description>
                             <opdata>{ITEM.VALUE} package[s]</opdata>
                             <priority>WARNING</priority>
                             <description>Some of installed packages are in potentially problematic state (i.e. different than 'installed' and 'config-files'). These packages may require further configuration or installation steps.</description>
+                            <manual_close>YES</manual_close>
                         </trigger>
                     </triggers>
                 </item>
@@ -189,7 +190,6 @@ Expected return value:
                             <expression>count(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.reboot.required,{$UBUNTUUSERPARAMS.REBOOT.GRACEPERIOD},&quot;eq&quot;,&quot;1&quot;)&gt;0 and count(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.reboot.required,{$UBUNTUUSERPARAMS.REBOOT.GRACEPERIOD},&quot;eq&quot;,&quot;2&quot;)=0</expression>
                             <name>System reboot pending for over {$UBUNTUUSERPARAMS.REBOOT.GRACEPERIOD}</name>
                             <priority>AVERAGE</priority>
-                            <manual_close>YES</manual_close>
                         </trigger>
                     </triggers>
                 </item>
@@ -207,22 +207,23 @@ Expected return value:
 number indicating the number of days.</description>
                     <triggers>
                         <trigger>
-                            <uuid>16fd38de68444542ab62335fab549743</uuid>
-                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&lt;=30 and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&gt;=0</expression>
-                            <name>Ubuntu release nears its End Of Life</name>
-                            <opdata>{ITEM.VALUE} days</opdata>
-                            <priority>AVERAGE</priority>
-                            <description>This is a reminder that installed Ubuntu release will reach the End Of Life milestone very soon. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.
-You should look into upgrade paths immediately if you haven't already.</description>
-                        </trigger>
-                        <trigger>
                             <uuid>239a5bb46db448da93d5c2969c14c64c</uuid>
-                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&lt;=90 and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&gt;=31</expression>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&lt;={$UBUNTUUSERPARAMS.RELEASE.THRESHOLD1} and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&gt;{$UBUNTUUSERPARAMS.RELEASE.THRESHOLD2}</expression>
                             <name>Ubuntu release nears its End Of Life</name>
                             <opdata>{ITEM.VALUE} days</opdata>
                             <priority>WARNING</priority>
                             <description>This is a reminder that installed Ubuntu release will soon reach the End Of Life milestone. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.
 You should look into upgrade paths.</description>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                        <trigger>
+                            <uuid>16fd38de68444542ab62335fab549743</uuid>
+                            <expression>last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&lt;={$UBUNTUUSERPARAMS.RELEASE.THRESHOLD2} and last(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.support.eol)&gt;=0</expression>
+                            <name>Ubuntu release nears its End Of Life</name>
+                            <opdata>{ITEM.VALUE} days</opdata>
+                            <priority>AVERAGE</priority>
+                            <description>This is a reminder that installed Ubuntu release will reach the End Of Life milestone very soon. After that milestone it will not receive security patches or other software updates and will not be supported by its vendor.
+You should look into upgrade paths immediately if you haven't already.</description>
                         </trigger>
                     </triggers>
                 </item>
@@ -291,11 +292,13 @@ number indicating the number of security updates.</description>
                             <name>Security updates pending</name>
                             <opdata>{ITEM.VALUE} update[s]</opdata>
                             <priority>WARNING</priority>
+                            <manual_close>YES</manual_close>
                         </trigger>
                         <trigger>
                             <uuid>d44eac9744da4e38869f6ce47858be68</uuid>
                             <expression>count(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.updates.security,{$UBUNTUUSERPARAMS.SECURITY.GRACEPERIOD},&quot;gt&quot;,&quot;0&quot;)&gt;0 and count(/Template ubuntu-userparams by Zabbix agent active/ubuntu-userparams.updates.security,{$UBUNTUUSERPARAMS.SECURITY.GRACEPERIOD},&quot;eq&quot;,&quot;0&quot;)=0</expression>
                             <name>Security updates pending for over {$UBUNTUUSERPARAMS.SECURITY.GRACEPERIOD}</name>
+                            <opdata>{ITEM.LASTVALUE}1 update[s]</opdata>
                             <priority>AVERAGE</priority>
                         </trigger>
                     </triggers>
@@ -315,10 +318,22 @@ number indicating the number of security updates.</description>
                 <macro>
                     <macro>{$UBUNTUUSERPARAMS.REBOOT.GRACEPERIOD}</macro>
                     <value>24h</value>
+                    <description>Grace period for reboot-pending error. Default value: 24h</description>
+                </macro>
+                <macro>
+                    <macro>{$UBUNTUUSERPARAMS.RELEASE.THRESHOLD1}</macro>
+                    <value>90</value>
+                    <description>Release EoL warning threshold (in days). Default value: 90</description>
+                </macro>
+                <macro>
+                    <macro>{$UBUNTUUSERPARAMS.RELEASE.THRESHOLD2}</macro>
+                    <value>30</value>
+                    <description>Release EoL error threshold (in days). Default value: 30</description>
                 </macro>
                 <macro>
                     <macro>{$UBUNTUUSERPARAMS.SECURITY.GRACEPERIOD}</macro>
                     <value>24h</value>
+                    <description>Grace period for security updates error. Default value: 24h</description>
                 </macro>
             </macros>
             <valuemaps>

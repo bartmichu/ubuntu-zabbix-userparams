@@ -34,6 +34,14 @@
 
   Grace period for security updates error. Default value: ```24h```
 
+- ```{$UBUNTUUSERPARAMS.RELEASE.THRESHOLD1}```
+
+  Release EoL warning threshold (in days). Default value: 90
+
+- ```{$UBUNTUUSERPARAMS.RELEASE.THRESHOLD2}```
+
+  Release EoL error threshold (in days). Default value: 30
+
 ## Template Keys
 
 - ```ubuntu-userparams.userparams-version```
@@ -116,7 +124,7 @@
 
 - Security updates pending (operational data)
 
-- Security updates pending for over {$UBUNTUUSERPARAMS.SECURITY.GRACEPERIOD}
+- Security updates pending for over {$UBUNTUUSERPARAMS.SECURITY.GRACEPERIOD} (operational data)
 
   Default value: 24 hours
 
