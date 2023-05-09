@@ -1,3 +1,5 @@
+## CAUTION: Any syntax error introduced here will break sudo.
+
 Defaults:zabbix !requiretty
 
 Defaults!NEEDRESTART_KERNEL !logfile, !syslog, !pam_session
